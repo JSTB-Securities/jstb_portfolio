@@ -949,6 +949,13 @@ function shareholdersCheck(vals) {
   return cur <= Math.min(...prev) ? 'Yes' : 'No';
 }
 
+function publicPctCheck(vals) {
+  const cur  = parseFloat(vals[0]);
+  const prev = vals.slice(1).map(v=>parseFloat(v)).filter(v=>!isNaN(v));
+  if (isNaN(cur) || prev.length < 1) return '';
+  return cur <= Math.min(...prev) ? 'Yes' : 'No';
+}
+
 function fiiCheck(vals) {
   const cur  = parseFloat(vals[0]);
   const prev = parseFloat(vals[1]);
@@ -968,6 +975,7 @@ function extraShareholderCheck(r) {
 
   const opmVals  = r.quarters.map(q => q.opm);
   const shVals   = r.quarters.map(q => q.shareholders);
+  const pubVals  = r.quarters.map(q => q.publicPct);
 
   const curOPMResult = computeOPMResult(opmVals);
   if (curOPMResult !== 'MAX Yes') return true;
@@ -979,15 +987,20 @@ function extraShareholderCheck(r) {
     return true;
   }
 
-  const prevShVals = shVals.slice(1);
+  const prevShVals  = shVals.slice(1);
   const validPrevSh = prevShVals.filter(v => v!==''&&v!==null&&v!==undefined&&!isNaN(parseFloat(v)));
-  if (validPrevSh.length < 2) return true;
+  const q1Sh        = parseFloat(prevShVals[0]);
+  const q1ShLowest  = validPrevSh.length >= 2 && !isNaN(q1Sh) && validPrevSh.every(v => q1Sh <= parseFloat(v));
 
-  const q1Sh = parseFloat(prevShVals[0]);
-  if (isNaN(q1Sh)) return true;
+  const prevPubVals  = pubVals.slice(1);
+  const validPrevPub = prevPubVals.filter(v => v!==''&&v!==null&&v!==undefined&&!isNaN(parseFloat(v)));
+  const q1Pub        = parseFloat(prevPubVals[0]);
+  const q1PubLowest  = validPrevPub.length >= 2 && !isNaN(q1Pub) && validPrevPub.every(v => q1Pub <= parseFloat(v));
 
-  const q1IsLowest = validPrevSh.every(v => q1Sh <= parseFloat(v));
-  return !q1IsLowest;
+  // Pass if NEITHER shareholders NOR public% was the lowest in Q-1
+  // Fail only if BOTH were lowest
+  if (q1ShLowest || q1PubLowest) return false; // EITHER lowest = FAIL
+  return true;                                  // BOTH not lowest = PASS
 }
 
 function computeVerdict(r) {
@@ -1003,11 +1016,15 @@ function computeVerdict(r) {
   const o4 = computeOPMResult(opmVals);
   const o5 = computeOPMResult(npVals);
   const o6 = shareholdersCheck(shVals);
+  const pubVals = qs.map(q => q.publicPct);
+  const o6b = publicPctCheck(pubVals);
   const o7 = fiiCheck(fiiVals);
   const o8 = diiCheck(diiVals);
 
   if (!extraShareholderCheck(r)) return 'No Trade';
-  if (o6==='No'||o7==='No') return 'No Trade';
+  // Pass if EITHER shareholders OR public% is at its lowest (minimum)
+  if (o6==='No' && o6b==='No') return 'No Trade';
+  if (o7==='No') return 'No Trade';
 
   if (o4==='MAX Yes' && o5==='MAX Yes') {
     return `Max Trade ${o8==='Yes'?'Aura++':'Aura--'}`;
@@ -1408,6 +1425,8 @@ function buildHeatCard(r) {
   const o4 = computeOPMResult(opmVals);
   const o5 = computeOPMResult(npVals);
   const o6 = shareholdersCheck(shVals);
+  const pubVals = qs.map(q => q.publicPct);
+  const o6b = publicPctCheck(pubVals);
   const o7 = fiiCheck(fiiVals);
   const o8 = diiCheck(diiVals);
 
@@ -1439,9 +1458,15 @@ function buildHeatCard(r) {
     const validPrevSh = prevShVals.filter(v=>v!==''&&v!==null&&v!==undefined&&!isNaN(parseFloat(v)));
     const q1Sh        = parseFloat(prevShVals[0]);
     const q1IsLowest  = validPrevSh.length>0 && !isNaN(q1Sh) && validPrevSh.every(v=>q1Sh<=parseFloat(v));
+    const prevPubValsHC  = qs.map(q=>q.publicPct).slice(1);
+    const validPrevPubHC = prevPubValsHC.filter(v=>v!==''&&v!==null&&v!==undefined&&!isNaN(parseFloat(v)));
+    const q1PubHC        = parseFloat(prevPubValsHC[0]);
+    const q1PubLowestHC  = validPrevPubHC.length>=2 && !isNaN(q1PubHC) && validPrevPubHC.every(v=>q1PubHC<=parseFloat(v));
+
     extraCheck = {
       q1OpmResult,
       q1ShLowest: q1IsLowest,
+      q1PubLowest: q1PubLowestHC,
       passed: extraShareholderCheck(r)
     };
   }
@@ -1467,7 +1492,9 @@ function buildHeatCard(r) {
     checklistHtml += row('  ↳ avg%/max%', `${npRatios.avgPct}% / ${npRatios.perPct}%`, 'info');
   }
   checklistHtml += `<hr class="hc-divider"/>`;
-  checklistHtml += row('Shareholders (lowest?)', o6==='Yes'?'✓ Yes':'✗ No', o6==='Yes'?'pass':'fail');
+  checklistHtml += row('Shareholders (lowest?)', o6==='Yes'?'✓ Yes':'✗ No', o6==='Yes'?'pass': o6b==='Yes'?'warn':'fail');
+  checklistHtml += row('Public% (lowest?)', o6b==='Yes'?'✓ Yes':'✗ No', o6b==='Yes'?'pass': o6==='Yes'?'warn':'fail');
+  checklistHtml += row('Sh or Pub% check', (o6==='Yes'||o6b==='Yes')?'✓ Pass':'✗ Fail', (o6==='Yes'||o6b==='Yes')?'pass':'fail');
   checklistHtml += `<hr class="hc-divider"/>`;
   checklistHtml += row('FII change vs Q-1', fiiDiff!==null?(parseFloat(fiiDiff)>=0?'+':'')+fiiDiff+'%':'—', fiiDiff!==null&&parseFloat(fiiDiff)>0?'pass': fiiDiff!==null&&parseFloat(fiiDiff)<0?'fail':'info');
   checklistHtml += row('FII check', o7==='Yes'?'✓ Increased':'✗ Not increased', o7==='Yes'?'pass':'fail');
@@ -1480,7 +1507,8 @@ function buildHeatCard(r) {
     checklistHtml += `<div style="font-size:0.56rem;opacity:0.55;letter-spacing:1px;margin-top:0.1rem;">OPM=MAX Yes → Extra Check</div>`;
     checklistHtml += row('Q-1 OPM was', extraCheck.q1OpmResult || '—', extraCheck.q1OpmResult?.includes('Yes')?'pass':'info');
     if (!extraCheck.q1OpmResult?.startsWith('#') || !extraCheck.q1OpmResult?.includes('Yes')) {
-      checklistHtml += row('Q-1 shareholders (not lowest?)', extraCheck.q1ShLowest?'✗ Was lowest':'✓ Not lowest', extraCheck.q1ShLowest?'fail':'pass');
+      checklistHtml += row('Q-1 sh (not lowest?)', extraCheck.q1ShLowest?'✗ Was lowest':'✓ Not lowest', extraCheck.q1ShLowest?'fail':'pass');
+      checklistHtml += row('Q-1 pub% (not lowest?)', extraCheck.q1PubLowest?'✗ Was lowest':'✓ Not lowest', extraCheck.q1PubLowest?'fail':'pass');
     } else {
       checklistHtml += row('Q-1 #n Yes → skip sh check', '✓ Auto pass', 'pass');
     }
