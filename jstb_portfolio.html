@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -80,8 +81,8 @@
   @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
 
   /* Tabs */
-  .main-tabs { display: flex; gap: 0; border-bottom: 1px solid var(--border); padding: 0 2rem; position: sticky; top: 64px; z-index: 90; background: rgba(8,12,16,0.95); backdrop-filter: blur(20px); }
-  .main-tab { padding: 0.85rem 1.5rem; font-family: var(--font-mono); font-size: 0.72rem; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--text-dim); border: none; background: transparent; cursor: pointer; border-bottom: 2px solid transparent; transition: all 0.2s; margin-bottom: -1px; }
+  .main-tabs { display: flex; gap: 0; border-bottom: 1px solid var(--border); padding: 0 2rem; position: sticky; top: 64px; z-index: 90; background: rgba(8,12,16,0.95); backdrop-filter: blur(20px); overflow-x: auto; }
+  .main-tab { padding: 0.85rem 1.5rem; font-family: var(--font-mono); font-size: 0.72rem; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--text-dim); border: none; background: transparent; cursor: pointer; border-bottom: 2px solid transparent; transition: all 0.2s; margin-bottom: -1px; white-space: nowrap; }
   .main-tab:hover { color: var(--text); }
   .main-tab.active { color: var(--accent); border-bottom-color: var(--accent); }
 
@@ -473,12 +474,392 @@
     margin-bottom: 1rem;
   }
 
+  /* ═══════════════════════════════════
+     SMART PASTE PAGE STYLES
+  ═══════════════════════════════════ */
+  .sp-step-label {
+    font-size: 0.58rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 0.75rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-family: var(--font-mono);
+  }
+  .sp-step-label::before {
+    content: '';
+    display: inline-block;
+    width: 24px; height: 1px;
+    background: var(--accent);
+  }
+
+  .sp-paste-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+  @media(max-width:900px){ .sp-paste-grid { grid-template-columns: 1fr; } }
+
+  .sp-paste-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  .sp-paste-card-header {
+    padding: 0.85rem 1.2rem;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .sp-paste-card-title {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+  .sp-paste-card-hint { font-size: 0.6rem; color: var(--text-dim); font-family: var(--font-mono); }
+
+  .sp-textarea {
+    width: 100%;
+    min-height: 160px;
+    background: transparent;
+    border: none;
+    outline: none;
+    padding: 1rem 1.2rem;
+    color: var(--text);
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    line-height: 1.7;
+    resize: vertical;
+  }
+  .sp-textarea::placeholder { color: var(--muted); }
+  .sp-textarea:focus { background: rgba(0,212,255,0.02); }
+
+  .sp-gen-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    width: 100%;
+    padding: 1rem 2rem;
+    background: var(--accent);
+    color: #000;
+    border: none;
+    border-radius: 10px;
+    font-family: var(--font-head);
+    font-size: 1.4rem;
+    letter-spacing: 3px;
+    cursor: pointer;
+    transition: all 0.2s;
+    margin-bottom: 2rem;
+    font-weight: 700;
+  }
+  .sp-gen-btn:hover {
+    background: #fff;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 32px rgba(0,212,255,0.3);
+  }
+
+  .sp-tables-wrap {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+  }
+  @media(max-width:1100px){ .sp-tables-wrap { grid-template-columns: 1fr; } }
+
+  .sp-table-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  .sp-table-card-header {
+    padding: 0.85rem 1.2rem;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .sp-table-card-title {
+    font-family: var(--font-head);
+    font-size: 1.1rem;
+    letter-spacing: 2px;
+    color: var(--accent2);
+  }
+  .sp-table-card-sub { font-size: 0.6rem; color: var(--text-dim); font-family: var(--font-mono); }
+
+  .sp-tbl-wrap { overflow-x: auto; }
+  .sp-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.68rem;
+    font-family: var(--font-mono);
+    white-space: nowrap;
+  }
+  .sp-table thead th {
+    padding: 0.5rem 0.75rem;
+    background: var(--surface);
+    border-bottom: 2px solid var(--border);
+    color: var(--text-dim);
+    font-size: 0.55rem;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    text-align: center;
+  }
+  .sp-table thead th:first-child { text-align: left; min-width: 120px; }
+  .sp-table tbody td {
+    padding: 0.45rem 0.75rem;
+    border-bottom: 1px solid rgba(30,45,61,0.5);
+    text-align: center;
+    vertical-align: middle;
+  }
+  .sp-table tbody td:first-child { text-align: left; }
+  .sp-table tbody tr:hover td { background: rgba(0,212,255,0.025); }
+
+  .sp-corner-th {
+    background: var(--surface) !important;
+    border-right: 2px solid var(--border) !important;
+    border-bottom: 2px solid var(--border) !important;
+    min-width: 140px;
+    width: 140px;
+  }
+  .sp-col-drop-th {
+    background: rgba(0,212,255,0.06) !important;
+    border-bottom: 2px solid var(--accent) !important;
+    padding: 0.3rem 0.4rem !important;
+    min-width: 110px;
+  }
+  .sp-row-drop-td {
+    background: rgba(0,255,136,0.04) !important;
+    border-right: 2px solid var(--border) !important;
+    padding: 0.3rem 0.4rem !important;
+  }
+
+  select.sp-map-sel {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    color: var(--text);
+    font-family: var(--font-mono);
+    font-size: 0.58rem;
+    padding: 0.3rem 0.4rem;
+    outline: none;
+    width: 100%;
+    cursor: pointer;
+    transition: border-color 0.15s;
+  }
+  select.sp-map-sel:focus, select.sp-map-sel:hover { border-color: var(--accent); }
+  select.sp-map-sel.sp-selected { border-color: var(--accent2); color: var(--accent2); }
+
+  .sp-data-val { color: var(--text); font-size: 0.65rem; }
+
+  /* Quarter chips for smart paste */
+  .sp-quarter-section {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+  }
+  .sp-q-section-title {
+    font-family: var(--font-head);
+    font-size: 1.2rem;
+    letter-spacing: 2px;
+    color: var(--accent2);
+    margin-bottom: 1rem;
+  }
+  .sp-q-grid { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+  .sp-q-chip {
+    padding: 0.4rem 0.9rem;
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    font-family: var(--font-mono);
+    font-size: 0.62rem;
+    color: var(--text-dim);
+    cursor: pointer;
+    transition: all 0.15s;
+    user-select: none;
+    position: relative;
+  }
+  .sp-q-chip:hover { border-color: var(--accent); color: var(--accent); }
+  .sp-q-chip.sp-selected {
+    background: rgba(0,212,255,0.12);
+    border-color: var(--accent);
+    color: var(--accent);
+    font-weight: 700;
+  }
+  .sp-q-chip .sp-q-rank {
+    position: absolute;
+    top: -6px; right: -4px;
+    background: var(--accent2);
+    color: #000;
+    font-size: 0.45rem;
+    font-weight: 700;
+    padding: 1px 4px;
+    border-radius: 8px;
+    min-width: 14px;
+    text-align: center;
+  }
+  .sp-q-hint { font-size: 0.62rem; color: var(--text-dim); font-family: var(--font-mono); margin-top: 0.75rem; }
+  .sp-q-hint b { color: var(--accent2); }
+
+  /* Results + Send to Input button */
+  .sp-results-section {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    margin-bottom: 2rem;
+  }
+  .sp-results-header {
+    padding: 1rem 1.5rem;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  .sp-results-title {
+    font-family: var(--font-head);
+    font-size: 1.3rem;
+    letter-spacing: 3px;
+    color: var(--text);
+  }
+  .sp-calc-btn {
+    padding: 0.65rem 2rem;
+    background: transparent;
+    border: 1px solid var(--accent);
+    color: var(--accent);
+    border-radius: 8px;
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    letter-spacing: 2px;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-weight: 700;
+    text-transform: uppercase;
+  }
+  .sp-calc-btn:hover { background: var(--accent); color: #000; }
+
+  .sp-send-btn {
+    padding: 0.65rem 2rem;
+    background: var(--accent2);
+    color: #000;
+    border: none;
+    border-radius: 8px;
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    letter-spacing: 2px;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-weight: 700;
+    text-transform: uppercase;
+    display: none;
+  }
+  .sp-send-btn:hover { background: #fff; box-shadow: 0 0 20px rgba(0,255,136,0.4); }
+
+  .sp-results-body { padding: 1.5rem; }
+
+  /* verdict result card */
+  .sp-verdict-card {
+    border-radius: 12px;
+    padding: 1.5rem;
+    border: 1px solid;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: flex-start;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+  }
+  .sp-verdict-card.pass { background: rgba(0,255,136,0.06); border-color: rgba(0,255,136,0.3); }
+  .sp-verdict-card.fail { background: rgba(255,71,87,0.06); border-color: rgba(255,71,87,0.3); }
+  .sp-verdict-card.warn { background: rgba(255,165,2,0.08); border-color: rgba(255,165,2,0.3); }
+
+  .sp-verdict-text { font-family: var(--font-head); font-size: 1.6rem; font-weight: 800; letter-spacing: 2px; }
+  .sp-check-result { font-family: var(--font-head); font-size: 0.95rem; font-weight: 700; letter-spacing: 0.5px; }
+  .sp-verdict-icon { font-size: 2.5rem; line-height: 1; }
+  .sp-verdict-main { flex: 1; }
+  .sp-verdict-label { font-family: var(--font-mono); font-size: 0.58rem; letter-spacing: 2px; text-transform: uppercase; color: var(--text-dim); margin-bottom: 0.3rem; }
+  .sp-verdict-text { font-family: var(--font-head); font-size: 2rem; letter-spacing: 2px; margin-bottom: 0.5rem; }
+  .sp-verdict-text.pass { color: var(--accent2); }
+  .sp-verdict-text.fail { color: var(--red); }
+  .sp-verdict-text.warn { color: var(--orange); }
+
+  .sp-check-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 0.75rem;
+  }
+  .sp-check-item {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 0.85rem 1rem;
+  }
+  .sp-check-item-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.4rem; }
+  .sp-check-item-label { font-family: var(--font-mono); font-size: 0.58rem; letter-spacing: 1.5px; text-transform: uppercase; color: var(--text-dim); }
+  .sp-check-badge { font-family: var(--font-mono); font-size: 0.6rem; font-weight: 700; padding: 0.15rem 0.5rem; border-radius: 4px; }
+  .sp-check-badge.pass { background: rgba(0,255,136,0.15); color: var(--accent2); }
+  .sp-check-badge.fail { background: rgba(255,71,87,0.15); color: var(--red); }
+  .sp-check-badge.warn { background: rgba(255,165,2,0.15); color: var(--orange); }
+  .sp-check-badge.info { background: rgba(0,212,255,0.1); color: var(--accent); }
+  .sp-check-result { font-family: var(--font-head); font-size: 1rem; letter-spacing: 1px; }
+  .sp-check-result.pass { color: var(--accent2); }
+  .sp-check-result.fail { color: var(--red); }
+  .sp-check-result.warn { color: var(--orange); }
+  .sp-check-result.info { color: var(--accent); }
+  .sp-check-detail { font-size: 0.6rem; color: var(--text-dim); font-family: var(--font-mono); margin-top: 0.25rem; line-height: 1.6; }
+
+  .sp-q-summary { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1rem; }
+  .sp-q-data-chip {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 0.5rem 0.85rem;
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+  }
+  .sp-q-data-chip .qdc-label { color: var(--text-dim); font-size: 0.52rem; letter-spacing: 1px; text-transform: uppercase; }
+  .sp-q-data-chip .qdc-val { color: var(--text); font-weight: 700; margin-top: 0.1rem; }
+  .sp-q-data-chip.cur { border-color: var(--accent2); background: rgba(0,255,136,0.05); }
+  .sp-q-data-chip.cur .qdc-val { color: var(--accent2); }
+
+  /* Send confirmation banner */
+  .sp-sent-banner {
+    display: none;
+    background: rgba(0,255,136,0.08);
+    border: 1px solid rgba(0,255,136,0.3);
+    border-radius: 10px;
+    padding: 1rem 1.5rem;
+    margin-bottom: 1.5rem;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    color: var(--accent2);
+    align-items: center;
+    gap: 0.75rem;
+  }
+  .sp-sent-banner.visible { display: flex; }
+
   @media (max-width: 700px) {
     main { padding: 1rem; }
     .form-grid { grid-template-columns: 1fr 1fr; }
     .form-group.wide { grid-column: span 2; }
     .quarter-inline-row.active { grid-template-columns: 1fr 1fr; }
     .pnl-grid { grid-template-columns: 1fr; }
+    .sp-paste-grid { grid-template-columns: 1fr; }
+    .sp-tables-wrap { grid-template-columns: 1fr; }
   }
 </style>
 </head>
@@ -502,6 +883,7 @@
   <button class="main-tab" onclick="showTab('heatmap-page')">🔥 Heatmap</button>
   <button class="main-tab" onclick="showTab('records-page')">📋 Stock Records</button>
   <button class="main-tab" onclick="showTab('input-page')">⚡ Input</button>
+  <button class="main-tab" onclick="showTab('smartpaste-page')">🔍 Smart Paste</button>
 </nav>
 
 <main>
@@ -510,8 +892,6 @@
        DASHBOARD PAGE
   ══════════════════════════════════════ -->
   <div id="dashboard-page" class="tab-page active">
-
-    <!-- Top summary stats -->
     <div class="summary-grid" id="dash-summary-grid">
       <div class="summary-card">
         <div class="card-label">Total Stocks</div>
@@ -545,9 +925,7 @@
       </div>
     </div>
 
-    <!-- PnL Cards -->
     <div class="pnl-grid">
-      <!-- Running Trades PnL -->
       <div class="pnl-card running">
         <div class="pnl-label"><span class="pnl-dot running"></span>Running Trades P&amp;L</div>
         <div class="pnl-amount neu" id="dash-running-pnl">—</div>
@@ -558,8 +936,6 @@
           <span><span style="font-size:0.6rem;color:var(--text-dim);">Positions</span><strong id="dash-running-count">—</strong></span>
         </div>
       </div>
-
-      <!-- Closed Trades PnL -->
       <div class="pnl-card closed">
         <div class="pnl-label"><span class="pnl-dot closed"></span>Closed Trades P&amp;L</div>
         <div class="pnl-amount neu" id="dash-closed-pnl">—</div>
@@ -570,8 +946,6 @@
           <span><span style="font-size:0.6rem;color:var(--text-dim);">Trades</span><strong id="dash-closed-count">—</strong></span>
         </div>
       </div>
-
-      <!-- Overall PnL -->
       <div class="pnl-card overall">
         <div class="pnl-label"><span class="pnl-dot overall"></span>Overall P&amp;L (Combined)</div>
         <div class="pnl-amount neu" id="dash-overall-pnl">—</div>
@@ -584,7 +958,6 @@
       </div>
     </div>
 
-    <!-- Strategy Breakdown -->
     <div class="panel">
       <div class="panel-header">
         <div class="panel-title">📈 P&amp;L by Strategy</div>
@@ -594,15 +967,8 @@
         <table class="strat-table">
           <thead>
             <tr>
-              <th>Strategy</th>
-              <th>Stocks</th>
-              <th>Invested</th>
-              <th>Current / Exit Value</th>
-              <th>P&amp;L</th>
-              <th>Return %</th>
-              <th>Progress</th>
-              <th>Running</th>
-              <th>Closed</th>
+              <th>Strategy</th><th>Stocks</th><th>Invested</th><th>Current / Exit Value</th>
+              <th>P&amp;L</th><th>Return %</th><th>Progress</th><th>Running</th><th>Closed</th>
             </tr>
           </thead>
           <tbody id="strat-tbody">
@@ -611,7 +977,6 @@
         </table>
       </div>
     </div>
-
   </div>
 
   <!-- ══════════════════════════════════════
@@ -654,8 +1019,6 @@
        INPUT PAGE
   ══════════════════════════════════════ -->
   <div id="input-page" class="tab-page">
-
-    <!-- Add / Edit Form -->
     <div class="panel" id="form-panel">
       <div class="panel-header">
         <div class="panel-title" id="form-title">⚡ Add Stock Entry</div>
@@ -663,20 +1026,15 @@
       </div>
 
       <div class="form-grid">
-
-        <!-- COMPANY INFO -->
         <div class="form-section-label">Company Info</div>
-
         <div class="form-group wide">
           <label>Company Full Name</label>
           <input type="text" id="inp-company" placeholder="e.g. One 97 Communications Ltd"/>
         </div>
-
         <div class="form-group">
           <label>Ticker Symbol</label>
           <input type="text" id="inp-ticker" placeholder="PAYTM" maxlength="15" style="text-transform:uppercase"/>
         </div>
-
         <div class="form-group">
           <label>Exchange</label>
           <select id="inp-exchange">
@@ -689,15 +1047,12 @@
             <option value="HKEX">HKEX (Hong Kong)</option>
           </select>
         </div>
-
         <div class="form-group">
           <label>Strategy</label>
           <input type="text" id="inp-strategy" placeholder="e.g. Momentum, Growth…"/>
         </div>
 
-        <!-- PRICES -->
         <div class="form-section-label">Prices</div>
-
         <div class="form-group">
           <label>Entry Price</label>
           <input type="number" id="inp-entry" placeholder="150.00" step="any" min="0"/>
@@ -711,22 +1066,108 @@
           <input type="number" id="inp-current" placeholder="auto via Sheets" step="any" min="0"/>
         </div>
 
-        <!-- QUARTERLY DATA -->
         <div class="form-section-label">Quarterly Financial Data</div>
-
         <div class="form-group full">
           <label style="margin-bottom:0.5rem;">Select Quarter</label>
           <div class="quarter-tabs" id="q-tabs"></div>
         </div>
-
-        <!-- 5 quarter inline rows -->
         <div id="q-panels" style="grid-column:1/-1;"></div>
-
       </div>
 
       <div class="form-actions">
         <button class="btn btn-primary" id="submit-btn" onclick="submitForm()">+ ADD ENTRY</button>
         <span id="form-msg" style="font-size:0.72rem; color:var(--text-dim);"></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════
+       SMART PASTE PAGE
+  ══════════════════════════════════════ -->
+  <div id="smartpaste-page" class="tab-page">
+
+    <!-- Step 1: Paste -->
+    <div class="sp-step-label">Step 01 — Paste Your Data</div>
+    <div class="sp-paste-grid">
+      <div class="sp-paste-card">
+        <div class="sp-paste-card-header">
+          <div class="sp-paste-card-title">📊 Shareholding Pattern</div>
+          <div class="sp-paste-card-hint">Copy-paste from Screener / Zerodha etc.</div>
+        </div>
+        <textarea class="sp-textarea" id="sp-paste-holding" placeholder="Paste shareholding table here...
+Example:
+Jun 2023	Sep 2023	Dec 2023
+Promoters	86.46%	86.46%	86.46%
+FIIs	0.68%	0.59%	0.45%
+DIIs	6.43%	5.17%	4.71%
+Public	6.42%	7.76%	8.37%
+No. of Shareholders	4,53,524	6,06,046	6,77,087"></textarea>
+      </div>
+      <div class="sp-paste-card">
+        <div class="sp-paste-card-header">
+          <div class="sp-paste-card-title">📈 Quarterly Results</div>
+          <div class="sp-paste-card-hint">OPM%, Net Profit rows</div>
+        </div>
+        <textarea class="sp-textarea" id="sp-paste-quarterly" placeholder="Paste quarterly results table here...
+Example:
+Mar 2023	Jun 2023	Sep 2023
+OPM %	2%	10%	5%
+Net Profit	841	884	920"></textarea>
+      </div>
+    </div>
+
+    <button class="sp-gen-btn" onclick="spParseBoth()">⚡ GENERATE MAPPING TABLES</button>
+
+    <!-- Step 2: Mapping + Quarter Select + Results -->
+    <div id="sp-mapping-section" style="display:none;">
+      <div class="sp-step-label">Step 02 — Map Rows &amp; Columns</div>
+      <p style="font-size:0.68rem;color:var(--text-dim);margin-bottom:1rem;font-family:var(--font-mono);">
+        Use the <span style="color:var(--accent);">top dropdowns</span> to label each column (quarter name).
+        Use the <span style="color:var(--accent2);">right dropdowns</span> to label each row (data type).
+      </p>
+
+      <div class="sp-tables-wrap">
+        <div class="sp-table-card">
+          <div class="sp-table-card-header">
+            <div class="sp-table-card-title">SHAREHOLDING</div>
+            <div class="sp-table-card-sub">MAP ROWS &amp; COLUMN HEADERS</div>
+          </div>
+          <div class="sp-tbl-wrap"><table class="sp-table" id="sp-tbl-holding"></table></div>
+        </div>
+        <div class="sp-table-card">
+          <div class="sp-table-card-header">
+            <div class="sp-table-card-title">QUARTERLY RESULTS</div>
+            <div class="sp-table-card-sub">MAP ROWS &amp; COLUMN HEADERS</div>
+          </div>
+          <div class="sp-tbl-wrap"><table class="sp-table" id="sp-tbl-quarterly"></table></div>
+        </div>
+      </div>
+
+      <!-- Step 3: Quarter Chips -->
+      <div class="sp-step-label">Step 03 — Select 5 Quarters (Current → Q-4)</div>
+      <div class="sp-quarter-section">
+        <div class="sp-q-section-title">QUARTER SELECTION</div>
+        <div class="sp-q-grid" id="sp-q-chips"></div>
+        <div class="sp-q-hint">Click quarters in order: <b>1st click = Current</b>, 2nd = Q-1, 3rd = Q-2, 4th = Q-3, 5th = Q-4</div>
+      </div>
+
+      <!-- Results -->
+      <div class="sp-results-section">
+        <div class="sp-results-header">
+          <div class="sp-results-title">VERDICT &amp; ANALYSIS</div>
+          <div style="display:flex;gap:0.5rem;flex-wrap:wrap;">
+            <button class="sp-calc-btn" onclick="spCalculate()">▶ CALCULATE</button>
+            <button class="sp-send-btn" id="sp-send-btn" onclick="spSendToInput()">📥 SEND TO INPUT TAB</button>
+          </div>
+        </div>
+        <div class="sp-results-body">
+          <div id="sp-sent-banner" class="sp-sent-banner">
+            ✅ Data sent to Input tab! Switch to the Input tab to fill in the remaining fields (company name, ticker, exchange, strategy, prices) and save.
+          </div>
+          <div id="sp-results-output">
+            <div class="empty-state"><div class="icon">📐</div>Map your columns &amp; rows, select 5 quarters, then click CALCULATE.</div>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -754,7 +1195,7 @@ function showTab(id) {
   document.querySelectorAll('.tab-page').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.main-tab').forEach(t => t.classList.remove('active'));
   document.getElementById(id).classList.add('active');
-  const tabs = ['dashboard-page','heatmap-page','records-page','input-page'];
+  const tabs = ['dashboard-page','heatmap-page','records-page','input-page','smartpaste-page'];
   const idx  = tabs.indexOf(id);
   document.querySelectorAll('.main-tab')[idx].classList.add('active');
   if (id === 'heatmap-page')   renderHeatmap();
@@ -788,7 +1229,6 @@ function buildQuarterUI() {
 
   panelsEl.innerHTML = QUARTERS.map((q, i) => {
     const isCurrentQ = (i === 0);
-    const monthOpts  = MONTHS.map((m,mi)=>`<option value="${m}">${m}</option>`).join('');
     const yearOpts   = YEARS.map(y=>`<option value="${y}" ${y===new Date().getFullYear()?'selected':''}>${y}</option>`).join('');
 
     return `
@@ -972,47 +1412,34 @@ function diiCheck(vals) {
 
 function extraShareholderCheck(r) {
   if (!r.quarters || r.quarters.length < 2) return true;
-
   const opmVals  = r.quarters.map(q => q.opm);
   const shVals   = r.quarters.map(q => q.shareholders);
   const pubVals  = r.quarters.map(q => q.publicPct);
-
   const curOPMResult = computeOPMResult(opmVals);
   if (curOPMResult !== 'MAX Yes') return true;
-
   const prevOpmVals = opmVals.slice(1);
   const q1OpmResult = computeOPMResult(prevOpmVals);
-
-  if (q1OpmResult.startsWith('#') && q1OpmResult.includes('Yes')) {
-    return true;
-  }
-
+  if (q1OpmResult.startsWith('#') && q1OpmResult.includes('Yes')) return true;
   const prevShVals  = shVals.slice(1);
   const validPrevSh = prevShVals.filter(v => v!==''&&v!==null&&v!==undefined&&!isNaN(parseFloat(v)));
   const q1Sh        = parseFloat(prevShVals[0]);
   const q1ShLowest  = validPrevSh.length >= 2 && !isNaN(q1Sh) && validPrevSh.every(v => q1Sh <= parseFloat(v));
-
   const prevPubVals  = pubVals.slice(1);
   const validPrevPub = prevPubVals.filter(v => v!==''&&v!==null&&v!==undefined&&!isNaN(parseFloat(v)));
   const q1Pub        = parseFloat(prevPubVals[0]);
   const q1PubLowest  = validPrevPub.length >= 2 && !isNaN(q1Pub) && validPrevPub.every(v => q1Pub <= parseFloat(v));
-
-  // Pass if NEITHER shareholders NOR public% was the lowest in Q-1
-  // Fail only if BOTH were lowest
-  if (q1ShLowest || q1PubLowest) return false; // EITHER lowest = FAIL
-  return true;                                  // BOTH not lowest = PASS
+  if (q1ShLowest || q1PubLowest) return false;
+  return true;
 }
 
 function computeVerdict(r) {
   if (!r.quarters || r.quarters.length < 2) return 'No Trade';
-
   const qs = r.quarters;
   const opmVals = qs.map(q => q.opm);
   const npVals  = qs.map(q => q.netProfit);
   const shVals  = qs.map(q => q.shareholders);
   const fiiVals = qs.map(q => q.fii);
   const diiVals = qs.map(q => q.dii);
-
   const o4 = computeOPMResult(opmVals);
   const o5 = computeOPMResult(npVals);
   const o6 = shareholdersCheck(shVals);
@@ -1020,26 +1447,16 @@ function computeVerdict(r) {
   const o6b = publicPctCheck(pubVals);
   const o7 = fiiCheck(fiiVals);
   const o8 = diiCheck(diiVals);
-
   if (!extraShareholderCheck(r)) return 'No Trade';
-  // Pass if EITHER shareholders OR public% is at its lowest (minimum)
   if (o6==='No' && o6b==='No') return 'No Trade';
   if (o7==='No') return 'No Trade';
-
-  if (o4==='MAX Yes' && o5==='MAX Yes') {
-    return `Max Trade ${o8==='Yes'?'Aura++':'Aura--'}`;
-  }
-
-  if ((o4==='MAX Yes'||( o4.startsWith('#')&&o4.includes('Yes'))) && o5==='No') {
-    return 'Trade ⚠️';
-  }
-
+  if (o4==='MAX Yes' && o5==='MAX Yes') return `Max Trade ${o8==='Yes'?'Aura++':'Aura--'}`;
+  if ((o4==='MAX Yes'||( o4.startsWith('#')&&o4.includes('Yes'))) && o5==='No') return 'Trade ⚠️';
   if (o4.startsWith('#')&&o4.includes('Yes')&&o5.startsWith('#')&&o5.includes('Yes')) {
     const n1 = parseInt(o4[1]);
     const n2 = parseInt(o5[1]);
     return `Trade #${n1+n2} ${o8==='Yes'?'Aura++':'Aura--'}`;
   }
-
   return 'No Trade';
 }
 
@@ -1061,54 +1478,33 @@ function verdictBadgeClass(verdict) {
 
 // ─── DASHBOARD RENDERING ──────────────────────────────────
 function renderDashboard() {
-  // Only include stocks that have a qualifying verdict (exclude No Trade)
   const tradeable = records.filter(r => isQualifyingVerdict(computeVerdict(r)));
+  const running = tradeable.filter(r => { const ep = parseFloat(r.exitPrice); return !r.exitPrice || isNaN(ep); });
+  const closed  = tradeable.filter(r => { const ep = parseFloat(r.exitPrice); return r.exitPrice && !isNaN(ep); });
 
-  // Compute PnL data
-  const running = tradeable.filter(r => {
-    const ep = parseFloat(r.exitPrice);
-    return !r.exitPrice || isNaN(ep);
-  });
-  const closed = tradeable.filter(r => {
-    const ep = parseFloat(r.exitPrice);
-    return r.exitPrice && !isNaN(ep);
-  });
-
-  // Running PnL: uses currentPrice (or entryPrice if no current)
-  let runningInv = 0, runningCurVal = 0, runningPnl = 0;
-  let runningCount = 0;
+  let runningInv = 0, runningCurVal = 0, runningPnl = 0, runningCount = 0;
   running.forEach(r => {
-    const entry   = parseFloat(r.entryPrice);
+    const entry = parseFloat(r.entryPrice);
     const current = parseFloat(r.currentPrice);
     if (!isNaN(entry)) {
-      runningInv += entry;
-      runningCount++;
-      if (!isNaN(current)) {
-        runningCurVal += current;
-        runningPnl    += (current - entry);
-      }
+      runningInv += entry; runningCount++;
+      if (!isNaN(current)) { runningCurVal += current; runningPnl += (current - entry); }
     }
   });
   const runningPct = runningInv > 0 ? (runningPnl / runningInv) * 100 : null;
 
-  // Closed PnL: uses exitPrice
-  let closedInv = 0, closedExitVal = 0, closedPnl = 0;
-  let closedCount = 0, closedWins = 0;
+  let closedInv = 0, closedExitVal = 0, closedPnl = 0, closedCount = 0, closedWins = 0;
   closed.forEach(r => {
     const entry = parseFloat(r.entryPrice);
     const exit  = parseFloat(r.exitPrice);
     if (!isNaN(entry) && !isNaN(exit)) {
-      closedInv    += entry;
-      closedExitVal += exit;
-      const pnl    = exit - entry;
-      closedPnl    += pnl;
-      closedCount++;
+      closedInv += entry; closedExitVal += exit;
+      const pnl = exit - entry; closedPnl += pnl; closedCount++;
       if (pnl >= 0) closedWins++;
     }
   });
   const closedPct = closedInv > 0 ? (closedPnl / closedInv) * 100 : null;
 
-  // Overall
   const totalInv = runningInv + closedInv;
   const totalVal = runningCurVal + closedExitVal;
   const overallPnl = runningPnl + closedPnl;
@@ -1131,8 +1527,7 @@ function renderDashboard() {
       pe.textContent = `${pnl >= 0 ? '+' : ''}${pct.toFixed(2)}% return`;
       pe.className = `pnl-pct ${pct > 0 ? 'pos' : pct < 0 ? 'neg' : 'neu'}`;
     } else {
-      pe.textContent = 'No price data';
-      pe.className = 'pnl-pct neu';
+      pe.textContent = 'No price data'; pe.className = 'pnl-pct neu';
     }
   }
 
@@ -1143,16 +1538,13 @@ function renderDashboard() {
   document.getElementById('dash-running-inv').textContent   = runningInv   ? '₹'+fmt(runningInv,0)   : '—';
   document.getElementById('dash-running-cur').textContent   = runningCurVal? '₹'+fmt(runningCurVal,0) : '—';
   document.getElementById('dash-running-count').textContent = runningCount || '0';
-
   document.getElementById('dash-closed-inv').textContent    = closedInv    ? '₹'+fmt(closedInv,0)    : '—';
   document.getElementById('dash-closed-exit').textContent   = closedExitVal? '₹'+fmt(closedExitVal,0) : '—';
   document.getElementById('dash-closed-count').textContent  = closedCount  || '0';
-
   document.getElementById('dash-overall-inv').textContent   = totalInv   ? '₹'+fmt(totalInv,0)   : '—';
   document.getElementById('dash-overall-val').textContent   = totalVal   ? '₹'+fmt(totalVal,0)   : '—';
   document.getElementById('dash-win-rate').textContent      = winRate !== null ? winRate+'%' : '—';
 
-  // Stats
   const uniqueTickers = new Set(records.map(r=>r.symbol)).size;
   const qualifying    = records.filter(r=>isQualifyingVerdict(computeVerdict(r))).length;
   document.getElementById('d-stat-stocks').textContent   = uniqueTickers || '—';
@@ -1162,7 +1554,6 @@ function renderDashboard() {
   document.getElementById('d-stat-invested').textContent = totalInv ? '₹'+fmt(totalInv,0) : '—';
   document.getElementById('d-stat-records').textContent  = records.length || '—';
 
-  // Strategy breakdown — only qualifying (non No Trade) stocks
   const stratMap = {};
   tradeable.forEach(r => {
     const s = (r.strategy||'Unassigned').trim();
@@ -1172,30 +1563,19 @@ function renderDashboard() {
     const cur   = parseFloat(r.currentPrice);
     const isClosed = r.exitPrice && !isNaN(exit);
     if (!isNaN(entry)) {
-      stratMap[s].inv   += entry;
-      stratMap[s].count++;
-      if (isClosed && !isNaN(exit)) {
-        stratMap[s].val  += exit;
-        stratMap[s].pnl  += (exit - entry);
-        stratMap[s].closed++;
-      } else if (!isNaN(cur)) {
-        stratMap[s].val  += cur;
-        stratMap[s].pnl  += (cur - entry);
-        stratMap[s].running++;
-      } else {
-        stratMap[s].running++;
-      }
+      stratMap[s].inv += entry; stratMap[s].count++;
+      if (isClosed && !isNaN(exit)) { stratMap[s].val += exit; stratMap[s].pnl += (exit-entry); stratMap[s].closed++; }
+      else if (!isNaN(cur)) { stratMap[s].val += cur; stratMap[s].pnl += (cur-entry); stratMap[s].running++; }
+      else { stratMap[s].running++; }
     }
   });
 
   const maxAbsPnl = Math.max(...Object.values(stratMap).map(v=>Math.abs(v.pnl)), 1);
-
   const tbody = document.getElementById('strat-tbody');
   if (!Object.keys(stratMap).length) {
     tbody.innerHTML = `<tr><td colspan="9"><div class="empty-state">No data yet.</div></td></tr>`;
     return;
   }
-
   tbody.innerHTML = Object.entries(stratMap)
     .sort((a,b) => b[1].pnl - a[1].pnl)
     .map(([name, d]) => {
@@ -1318,46 +1698,30 @@ function heatColor(pnlPct) {
     const g = Math.round(180 + intensity * 60);
     const b = Math.round(60  - intensity * 40);
     const alpha = 0.15 + intensity * 0.55;
-    return {
-      bg: `rgba(${r},${g},${b},${alpha})`,
-      border: `rgba(${r},${g},${b},${0.3+intensity*0.4})`,
-      text: `rgb(${r+20},${g},${b+20})`
-    };
+    return { bg:`rgba(${r},${g},${b},${alpha})`, border:`rgba(${r},${g},${b},${0.3+intensity*0.4})`, text:`rgb(${r+20},${g},${b+20})` };
   } else {
     const intensity = Math.min(Math.abs(v) / 100, 1);
     const r = Math.round(200 + intensity*55);
     const g = Math.round(30  - intensity*15);
     const b = Math.round(40  - intensity*15);
     const alpha = 0.15 + intensity * 0.5;
-    return {
-      bg: `rgba(${r},${g},${b},${alpha})`,
-      border: `rgba(${r},${g},${b},${0.3+intensity*0.4})`,
-      text: `rgb(${r},${g+20},${b+20})`
-    };
+    return { bg:`rgba(${r},${g},${b},${alpha})`, border:`rgba(${r},${g},${b},${0.3+intensity*0.4})`, text:`rgb(${r},${g+20},${b+20})` };
   }
 }
 
 function renderHeatmap() {
   const container = document.getElementById('heatmap-container');
-
   const qualifying = records.filter(r => isQualifyingVerdict(computeVerdict(r)));
-
   if (!qualifying.length) {
-    container.innerHTML = `<div class="no-qualify">
-      <div style="font-size:2rem;margin-bottom:1rem;">📊</div>
-      No stocks currently qualify for a buy signal.<br>
-      <span style="font-size:0.7rem;">Add more stock data or check your quarterly figures.</span>
-    </div>`;
+    container.innerHTML = `<div class="no-qualify"><div style="font-size:2rem;margin-bottom:1rem;">📊</div>No stocks currently qualify for a buy signal.<br><span style="font-size:0.7rem;">Add more stock data or check your quarterly figures.</span></div>`;
     return;
   }
-
   const stratMap = {};
   qualifying.forEach(r => {
     const s = (r.strategy||'').trim() || 'Unassigned';
     if (!stratMap[s]) stratMap[s] = [];
     stratMap[s].push(r);
   });
-
   const tickerStratCount = {};
   qualifying.forEach(r => {
     const s = (r.strategy||'').trim() || 'Unassigned';
@@ -1365,32 +1729,15 @@ function renderHeatmap() {
     if (!tickerStratCount[t]) tickerStratCount[t] = new Set();
     tickerStratCount[t].add(s);
   });
-  const importantTickers = new Set(
-    Object.entries(tickerStratCount)
-      .filter(([t,ss]) => ss.size >= 2)
-      .map(([t]) => t)
-  );
-
+  const importantTickers = new Set(Object.entries(tickerStratCount).filter(([t,ss]) => ss.size >= 2).map(([t]) => t));
   const importantRecords = [];
   const seenImportant = new Set();
   qualifying.forEach(r => {
-    if (importantTickers.has(r.symbol) && !seenImportant.has(r.symbol)) {
-      importantRecords.push(r);
-      seenImportant.add(r.symbol);
-    }
+    if (importantTickers.has(r.symbol) && !seenImportant.has(r.symbol)) { importantRecords.push(r); seenImportant.add(r.symbol); }
   });
-
   let html = '';
-
-  if (importantRecords.length > 0) {
-    html += buildStrategyGroup('⭐ Important Stocks', importantRecords, true);
-  }
-
-  const sortedStrats = Object.keys(stratMap).sort();
-  sortedStrats.forEach(s => {
-    html += buildStrategyGroup(s, stratMap[s], false);
-  });
-
+  if (importantRecords.length > 0) html += buildStrategyGroup('⭐ Important Stocks', importantRecords, true);
+  Object.keys(stratMap).sort().forEach(s => { html += buildStrategyGroup(s, stratMap[s], false); });
   container.innerHTML = html;
 }
 
@@ -1401,27 +1748,16 @@ function buildHeatCard(r) {
   const current  = parseFloat(r.currentPrice);
   const qs       = r.quarters || [];
   const curQ     = qs[0] || {};
-
-  let pnlPct = null;
-  let pnlStr = '—';
-  if (!isNaN(entry) && !isNaN(current) && entry > 0) {
-    pnlPct = ((current - entry) / entry) * 100;
-    pnlStr = (pnlPct >= 0 ? '+' : '') + pnlPct.toFixed(2) + '%';
-  }
-
-  const colors = pnlPct !== null
-    ? heatColor(pnlPct)
-    : { bg: 'rgba(20,30,42,0.85)', border: 'rgba(30,45,61,0.7)', text: '#cdd9e5' };
-
+  let pnlPct = null, pnlStr = '—';
+  if (!isNaN(entry) && !isNaN(current) && entry > 0) { pnlPct = ((current - entry) / entry) * 100; pnlStr = (pnlPct >= 0 ? '+' : '') + pnlPct.toFixed(2) + '%'; }
+  const colors = pnlPct !== null ? heatColor(pnlPct) : { bg: 'rgba(20,30,42,0.85)', border: 'rgba(30,45,61,0.7)', text: '#cdd9e5' };
   const priceStr = current ? '₹'+fmt(current) : (entry ? '₹'+fmt(entry) : '—');
   const qLabel = curQ.label && curQ.label !== 'Current' ? curQ.label : 'Current';
-
   const opmVals  = qs.map(q => q.opm);
   const npVals   = qs.map(q => q.netProfit);
   const shVals   = qs.map(q => q.shareholders);
   const fiiVals  = qs.map(q => q.fii);
   const diiVals  = qs.map(q => q.dii);
-
   const o4 = computeOPMResult(opmVals);
   const o5 = computeOPMResult(npVals);
   const o6 = shareholdersCheck(shVals);
@@ -1441,11 +1777,9 @@ function buildHeatCard(r) {
   }
   const opmRatios = getOPMRatios(opmVals);
   const npRatios  = getOPMRatios(npVals);
-
   const fiiCur  = parseFloat(fiiVals[0]);
   const fiiPrev = parseFloat(fiiVals[1]);
   const fiiDiff = (!isNaN(fiiCur)&&!isNaN(fiiPrev)) ? (fiiCur-fiiPrev).toFixed(2) : null;
-
   const diiCur  = parseFloat(diiVals[0]);
   const diiPrev = parseFloat(diiVals[1]);
   const diiDiff = (!isNaN(diiCur)&&!isNaN(diiPrev)) ? (diiCur-diiPrev).toFixed(2) : null;
@@ -1462,35 +1796,18 @@ function buildHeatCard(r) {
     const validPrevPubHC = prevPubValsHC.filter(v=>v!==''&&v!==null&&v!==undefined&&!isNaN(parseFloat(v)));
     const q1PubHC        = parseFloat(prevPubValsHC[0]);
     const q1PubLowestHC  = validPrevPubHC.length>=2 && !isNaN(q1PubHC) && validPrevPubHC.every(v=>q1PubHC<=parseFloat(v));
-
-    extraCheck = {
-      q1OpmResult,
-      q1ShLowest: q1IsLowest,
-      q1PubLowest: q1PubLowestHC,
-      passed: extraShareholderCheck(r)
-    };
+    extraCheck = { q1OpmResult, q1ShLowest: q1IsLowest, q1PubLowest: q1PubLowestHC, passed: extraShareholderCheck(r) };
   }
 
-  function row(label, val, cls) {
-    return `<div class="hc-check-row"><span class="hc-check-label">${label}</span><span class="hc-check-val ${cls}">${val}</span></div>`;
-  }
-
+  function row(label, val, cls) { return `<div class="hc-check-row"><span class="hc-check-label">${label}</span><span class="hc-check-val ${cls}">${val}</span></div>`; }
   const o4cls = o4==='MAX Yes'?'pass': o4==='No'?'fail': o4.includes('Yes')?'warn':'fail';
   const o5cls = o5==='MAX Yes'?'pass': o5==='No'?'fail': o5.includes('Yes')?'warn':'fail';
 
-  let checklistHtml = `
-    <div class="hc-checklist">
-      <div style="font-size:0.56rem;opacity:0.55;margin-bottom:0.2rem;letter-spacing:1px;text-transform:uppercase;">Checklist</div>
-      ${row('OPM', o4 || '—', o4cls)}
-  `;
-  if (opmRatios) {
-    checklistHtml += row('  ↳ avg%/max%', `${opmRatios.avgPct}% / ${opmRatios.perPct}%`, 'info');
-  }
+  let checklistHtml = `<div class="hc-checklist"><div style="font-size:0.56rem;opacity:0.55;margin-bottom:0.2rem;letter-spacing:1px;text-transform:uppercase;">Checklist</div>${row('OPM', o4 || '—', o4cls)}`;
+  if (opmRatios) checklistHtml += row('  ↳ avg%/max%', `${opmRatios.avgPct}% / ${opmRatios.perPct}%`, 'info');
   checklistHtml += `<hr class="hc-divider"/>`;
   checklistHtml += row('Net Profit', o5 || '—', o5cls);
-  if (npRatios) {
-    checklistHtml += row('  ↳ avg%/max%', `${npRatios.avgPct}% / ${npRatios.perPct}%`, 'info');
-  }
+  if (npRatios) checklistHtml += row('  ↳ avg%/max%', `${npRatios.avgPct}% / ${npRatios.perPct}%`, 'info');
   checklistHtml += `<hr class="hc-divider"/>`;
   checklistHtml += row('Shareholders (lowest?)', o6==='Yes'?'✓ Yes':'✗ No', o6==='Yes'?'pass': o6b==='Yes'?'warn':'fail');
   checklistHtml += row('Public% (lowest?)', o6b==='Yes'?'✓ Yes':'✗ No', o6b==='Yes'?'pass': o6==='Yes'?'warn':'fail');
@@ -1501,7 +1818,6 @@ function buildHeatCard(r) {
   checklistHtml += `<hr class="hc-divider"/>`;
   checklistHtml += row('DII change vs Q-1', diiDiff!==null?(parseFloat(diiDiff)>=0?'+':'')+diiDiff+'%':'—', diiDiff!==null&&parseFloat(diiDiff)>0?'pass':diiDiff!==null&&parseFloat(diiDiff)<0?'fail':'info');
   checklistHtml += row('DII (Aura)', o8==='Yes'?'✓ Aura++':'✗ Aura--', o8==='Yes'?'pass':'warn');
-
   if (extraCheck) {
     checklistHtml += `<hr class="hc-divider"/>`;
     checklistHtml += `<div style="font-size:0.56rem;opacity:0.55;letter-spacing:1px;margin-top:0.1rem;">OPM=MAX Yes → Extra Check</div>`;
@@ -1514,7 +1830,6 @@ function buildHeatCard(r) {
     }
     checklistHtml += row('Extra rule', extraCheck.passed?'✓ Passed':'✗ Failed', extraCheck.passed?'pass':'fail');
   }
-
   checklistHtml += `</div>`;
 
   return `<div class="heat-card" style="background:${colors.bg};border-color:${colors.border};">
@@ -1531,44 +1846,34 @@ function buildHeatCard(r) {
 function buildStrategyGroup(title, recs, isImportant) {
   const cards = recs.map(r => buildHeatCard(r)).join('');
   const displayTitle = isImportant ? 'Important Stocks' : title;
-  return `
-    <div class="strategy-group${isImportant?' important':''}">
-      <div class="strategy-group-header">
-        <div class="strategy-group-title">${displayTitle}</div>
-        <div class="strategy-count">${recs.length} stock${recs.length!==1?'s':''}</div>
-      </div>
-      <div class="heat-grid">${cards||'<div class="strategy-empty">No qualifying stocks</div>'}</div>
+  return `<div class="strategy-group${isImportant?' important':''}">
+    <div class="strategy-group-header">
+      <div class="strategy-group-title">${displayTitle}</div>
+      <div class="strategy-count">${recs.length} stock${recs.length!==1?'s':''}</div>
     </div>
-  `;
+    <div class="heat-grid">${cards||'<div class="strategy-empty">No qualifying stocks</div>'}</div>
+  </div>`;
 }
 
 function gatherForm() {
   const ticker  = document.getElementById('inp-ticker').value.trim().toUpperCase();
   const company = document.getElementById('inp-company').value.trim();
   const msg     = document.getElementById('form-msg');
-
-  if (!ticker||!company) {
-    msg.textContent = '⚠ Company name and ticker are required.';
-    msg.style.color = 'var(--red)';
-    return null;
-  }
-
+  if (!ticker||!company) { msg.textContent = '⚠ Company name and ticker are required.'; msg.style.color = 'var(--red)'; return null; }
   const curMonth = document.getElementById('q0-month')?.value || QUARTERS[0].label.split(' ')[0];
   const curYear  = document.getElementById('q0-year')?.value  || QUARTERS[0].label.split(' ')[1];
   const curLabel = `${curMonth} ${curYear}`;
-
   const quarters = QUARTERS.map((q,i) => ({
-    label:        i===0 ? curLabel : q.label,
-    opm:          document.getElementById(`q${i}-opm`).value,
-    netProfit:    document.getElementById(`q${i}-np`).value,
+    label: i===0 ? curLabel : q.label,
+    opm: document.getElementById(`q${i}-opm`).value,
+    netProfit: document.getElementById(`q${i}-np`).value,
     shareholders: document.getElementById(`q${i}-sh`).value,
-    fii:          document.getElementById(`q${i}-fii`).value,
-    dii:          document.getElementById(`q${i}-dii`).value,
-    publicPct:    document.getElementById(`q${i}-pub`).value,
-    promoter:     document.getElementById(`q${i}-pro`).value,
-    govt:         document.getElementById(`q${i}-gov`).value,
+    fii: document.getElementById(`q${i}-fii`).value,
+    dii: document.getElementById(`q${i}-dii`).value,
+    publicPct: document.getElementById(`q${i}-pub`).value,
+    promoter: document.getElementById(`q${i}-pro`).value,
+    govt: document.getElementById(`q${i}-gov`).value,
   }));
-
   return {
     companyName:  company,
     symbol:       ticker,
@@ -1584,11 +1889,8 @@ function gatherForm() {
 async function submitForm() {
   const payload = gatherForm();
   if (!payload) return;
-
   const msg = document.getElementById('form-msg');
-  msg.textContent = '⟳ Saving…';
-  msg.style.color = 'var(--text-dim)';
-
+  msg.textContent = '⟳ Saving…'; msg.style.color = 'var(--text-dim)';
   if (IS_DEMO) {
     if (editingId) {
       const idx = records.findIndex(r=>String(r.id)===String(editingId));
@@ -1597,38 +1899,23 @@ async function submitForm() {
       records.push({...payload, id:Date.now()});
     }
     afterLoad();
-    msg.textContent = '✅ Saved (demo)';
-    msg.style.color = 'var(--accent2)';
-    cancelEdit();
-    toast(editingId?'Updated (demo)':'Added (demo)');
+    msg.textContent = '✅ Saved (demo)'; msg.style.color = 'var(--accent2)';
+    cancelEdit(); toast(editingId?'Updated (demo)':'Added (demo)');
     return;
   }
-
   try {
-    const body = editingId
-      ? {action:'update', id:editingId, ...payload}
-      : {action:'add', ...payload};
+    const body = editingId ? {action:'update', id:editingId, ...payload} : {action:'add', ...payload};
     const res  = await fetch(APPS_SCRIPT_URL, {method:'POST', body:JSON.stringify(body)});
     const data = await res.json();
-    if (data.success) {
-      msg.textContent = '✅ Saved!';
-      msg.style.color = 'var(--accent2)';
-      toast(editingId?'Entry updated!':'Entry saved to Sheets!');
-      cancelEdit();
-      await loadRecords();
-    } else throw new Error(data.error||'Unknown error');
-  } catch(e) {
-    msg.textContent = '❌ '+e.message;
-    msg.style.color = 'var(--red)';
-    toast('Save failed: '+e.message, 'error');
-  }
+    if (data.success) { msg.textContent = '✅ Saved!'; msg.style.color = 'var(--accent2)'; toast(editingId?'Entry updated!':'Entry saved to Sheets!'); cancelEdit(); await loadRecords(); }
+    else throw new Error(data.error||'Unknown error');
+  } catch(e) { msg.textContent = '❌ '+e.message; msg.style.color = 'var(--red)'; toast('Save failed: '+e.message, 'error'); }
 }
 
 function startEdit(id) {
   const r = records.find(r=>String(r.id)===String(id));
   if (!r) return;
   editingId = id;
-
   document.getElementById('inp-company').value  = r.companyName||'';
   document.getElementById('inp-ticker').value   = r.symbol||'';
   document.getElementById('inp-exchange').value = r.exchange||'NSE';
@@ -1636,7 +1923,6 @@ function startEdit(id) {
   document.getElementById('inp-entry').value    = r.entryPrice??'';
   document.getElementById('inp-exit').value     = r.exitPrice??'';
   document.getElementById('inp-current').value  = r.currentPrice??'';
-
   QUARTERS.forEach((q,i) => {
     const qd = r.quarters&&r.quarters[i] ? r.quarters[i] : {};
     if (i===0 && qd.label) {
@@ -1658,43 +1944,31 @@ function startEdit(id) {
     document.getElementById(`q${i}-pro`).value = qd.promoter??'';
     document.getElementById(`q${i}-gov`).value = qd.govt??'';
   });
-
   switchQTab(0);
-  document.getElementById('form-title').textContent     = '✎ Edit Entry';
-  document.getElementById('submit-btn').textContent     = '✓ UPDATE ENTRY';
-  document.getElementById('cancel-btn').style.display   = 'inline-flex';
-  // Switch to input tab for editing
+  document.getElementById('form-title').textContent   = '✎ Edit Entry';
+  document.getElementById('submit-btn').textContent   = '✓ UPDATE ENTRY';
+  document.getElementById('cancel-btn').style.display = 'inline-flex';
   showTab('input-page');
   document.getElementById('form-panel').scrollIntoView({behavior:'smooth',block:'start'});
 }
 
 function cancelEdit() {
   editingId = null;
-  ['inp-company','inp-ticker','inp-entry','inp-exit','inp-current','inp-strategy'].forEach(id=>{
-    document.getElementById(id).value='';
-  });
+  ['inp-company','inp-ticker','inp-entry','inp-exit','inp-current','inp-strategy'].forEach(id=>{ document.getElementById(id).value=''; });
   document.getElementById('inp-exchange').value='NSE';
   QUARTERS.forEach((q,i)=>{
-    ['opm','np','sh','fii','dii','pub','pro','gov'].forEach(f=>{
-      document.getElementById(`q${i}-${f}`).value='';
-    });
+    ['opm','np','sh','fii','dii','pub','pro','gov'].forEach(f=>{ document.getElementById(`q${i}-${f}`).value=''; });
   });
   document.getElementById('form-msg').textContent   = '';
   document.getElementById('form-title').textContent = '⚡ Add Stock Entry';
   document.getElementById('submit-btn').textContent = '+ ADD ENTRY';
   document.getElementById('cancel-btn').style.display='none';
-  switchQTab(0);
-  updateCurrentQLabel();
+  switchQTab(0); updateCurrentQLabel();
 }
 
 async function deleteRecord(id) {
   if (!confirm('Delete this entry?')) return;
-  if (IS_DEMO) {
-    records = records.filter(r=>String(r.id)!==String(id));
-    afterLoad();
-    toast('Deleted (demo)');
-    return;
-  }
+  if (IS_DEMO) { records = records.filter(r=>String(r.id)!==String(id)); afterLoad(); toast('Deleted (demo)'); return; }
   try {
     const res  = await fetch(APPS_SCRIPT_URL, {method:'POST', body:JSON.stringify({action:'delete', id})});
     const data = await res.json();
@@ -1705,69 +1979,456 @@ async function deleteRecord(id) {
 
 function getDemoData() {
   return [
-    {
-      id:1, companyName:'MTAR Technologies Ltd', symbol:'MTARTECH',
-      exchange:'NSE', strategy:'Momentum',
-      entryPrice:1800, exitPrice:'', currentPrice:2100,
-      quarters:[
-        {label:'Dec 2025', opm:33, netProfit:16, shareholders:304480, fii:7.01, dii:23.17, publicPct:38.39, promoter:31.42, govt:0},
-        {label:'Sep 2025', opm:37, netProfit:19, shareholders:317125, fii:7.81, dii:17.28, publicPct:38.39, promoter:31.42, govt:0},
-        {label:'Jun 2025', opm:34, netProfit:14, shareholders:301097, fii:6.74, dii:24.4,  publicPct:37.1,  promoter:31.77, govt:0},
-        {label:'Mar 2025', opm:28, netProfit:11, shareholders:297581, fii:7.57, dii:23.51, publicPct:37.26, promoter:31.65, govt:0},
-        {label:'Dec 2024', opm:17, netProfit:5,  shareholders:275940, fii:9.21, dii:24.81, publicPct:34.58, promoter:31.41, govt:0},
-      ]
-    },
-    {
-      id:2, companyName:'Le Travenues Technology Ltd', symbol:'IXIGO',
-      exchange:'NSE', strategy:'Growth',
-      entryPrice:180, exitPrice:'', currentPrice:210,
-      quarters:[
-        {label:'Dec 2025', opm:19, netProfit:16, shareholders:84954,  fii:61.07, dii:8.19, publicPct:30.74, promoter:0, govt:0},
-        {label:'Sep 2025', opm:21, netProfit:17, shareholders:88925,  fii:59.48, dii:9.74, publicPct:30.77, promoter:0, govt:0},
-        {label:'Jun 2025', opm:23, netProfit:19, shareholders:77903,  fii:59.9,  dii:10.94,publicPct:29.16, promoter:0, govt:0},
-        {label:'Mar 2025', opm:-5, netProfit:-3, shareholders:87104,  fii:59.64, dii:9.37, publicPct:30.99, promoter:0, govt:0},
-        {label:'Dec 2024', opm:24, netProfit:25, shareholders:87020,  fii:63.7,  dii:9.32, publicPct:27.01, promoter:0, govt:0},
-      ]
-    },
-    {
-      id:3, companyName:'One 97 Communications Ltd', symbol:'PAYTM',
-      exchange:'NSE', strategy:'Momentum',
-      entryPrice:450, exitPrice:750, currentPrice:820,
-      quarters:[
-        {label:'Dec 2025', opm:155, netProfit:225,  shareholders:841556,  fii:51.75, dii:20.32, publicPct:32.18, promoter:0, govt:0},
-        {label:'Sep 2025', opm:140, netProfit:21,   shareholders:868596,  fii:51.71, dii:19.95, publicPct:33.22, promoter:0, govt:0},
-        {label:'Jun 2025', opm:72,  netProfit:123,  shareholders:915364,  fii:54.87, dii:15.84, publicPct:33.22, promoter:0, govt:0},
-        {label:'Mar 2025', opm:-89, netProfit:-545, shareholders:967955,  fii:55.39, dii:14.02, publicPct:38.13, promoter:0, govt:0},
-        {label:'Dec 2024', opm:-223,netProfit:-208, shareholders:989752,  fii:56.2,  dii:11.88, publicPct:38.13, promoter:0, govt:0},
-      ]
-    },
-    {
-      id:4, companyName:'PAYTM Clone Test', symbol:'PAYTM',
-      exchange:'NSE', strategy:'Growth',
-      entryPrice:450, exitPrice:600, currentPrice:820,
-      quarters:[
-        {label:'Dec 2025', opm:155, netProfit:225,  shareholders:841556,  fii:51.75, dii:20.32, publicPct:32.18, promoter:0, govt:0},
-        {label:'Sep 2025', opm:140, netProfit:21,   shareholders:868596,  fii:51.71, dii:19.95, publicPct:33.22, promoter:0, govt:0},
-        {label:'Jun 2025', opm:72,  netProfit:123,  shareholders:915364,  fii:54.87, dii:15.84, publicPct:33.22, promoter:0, govt:0},
-        {label:'Mar 2025', opm:-89, netProfit:-545, shareholders:967955,  fii:55.39, dii:14.02, publicPct:38.13, promoter:0, govt:0},
-        {label:'Dec 2024', opm:-223,netProfit:-208, shareholders:989752,  fii:56.2,  dii:11.88, publicPct:38.13, promoter:0, govt:0},
-      ]
-    },
-    {
-      id:5, companyName:'Vedanta Ltd', symbol:'VEDL',
-      exchange:'NSE', strategy:'Value',
-      entryPrice:400, exitPrice:'', currentPrice:380,
-      quarters:[
-        {label:'Dec 2025', opm:5013, netProfit:4876, shareholders:1909460, fii:56.2, dii:11.88, publicPct:38.13, promoter:0, govt:0},
-        {label:'Sep 2025', opm:11466,netProfit:4961, shareholders:1785798, fii:55.39,dii:14.02, publicPct:38.13, promoter:0, govt:0},
-        {label:'Jun 2025', opm:9918, netProfit:4457, shareholders:1792821, fii:54.87,dii:15.84, publicPct:33.22, promoter:0, govt:0},
-        {label:'Mar 2025', opm:4945, netProfit:3479, shareholders:1866939, fii:51.71,dii:19.95, publicPct:33.22, promoter:0, govt:0},
-        {label:'Dec 2024', opm:6866, netProfit:7807, shareholders:1999975, fii:51.75,dii:20.32, publicPct:32.18, promoter:0, govt:0},
-      ]
-    }
+    { id:1, companyName:'MTAR Technologies Ltd', symbol:'MTARTECH', exchange:'NSE', strategy:'Momentum', entryPrice:1800, exitPrice:'', currentPrice:2100, quarters:[
+      {label:'Dec 2025', opm:33, netProfit:16, shareholders:304480, fii:7.01, dii:23.17, publicPct:38.39, promoter:31.42, govt:0},
+      {label:'Sep 2025', opm:37, netProfit:19, shareholders:317125, fii:7.81, dii:17.28, publicPct:38.39, promoter:31.42, govt:0},
+      {label:'Jun 2025', opm:34, netProfit:14, shareholders:301097, fii:6.74, dii:24.4,  publicPct:37.1,  promoter:31.77, govt:0},
+      {label:'Mar 2025', opm:28, netProfit:11, shareholders:297581, fii:7.57, dii:23.51, publicPct:37.26, promoter:31.65, govt:0},
+      {label:'Dec 2024', opm:17, netProfit:5,  shareholders:275940, fii:9.21, dii:24.81, publicPct:34.58, promoter:31.41, govt:0},
+    ]},
+    { id:2, companyName:'Le Travenues Technology Ltd', symbol:'IXIGO', exchange:'NSE', strategy:'Growth', entryPrice:180, exitPrice:'', currentPrice:210, quarters:[
+      {label:'Dec 2025', opm:19, netProfit:16, shareholders:84954,  fii:61.07, dii:8.19, publicPct:30.74, promoter:0, govt:0},
+      {label:'Sep 2025', opm:21, netProfit:17, shareholders:88925,  fii:59.48, dii:9.74, publicPct:30.77, promoter:0, govt:0},
+      {label:'Jun 2025', opm:23, netProfit:19, shareholders:77903,  fii:59.9,  dii:10.94,publicPct:29.16, promoter:0, govt:0},
+      {label:'Mar 2025', opm:-5, netProfit:-3, shareholders:87104,  fii:59.64, dii:9.37, publicPct:30.99, promoter:0, govt:0},
+      {label:'Dec 2024', opm:24, netProfit:25, shareholders:87020,  fii:63.7,  dii:9.32, publicPct:27.01, promoter:0, govt:0},
+    ]},
+    { id:3, companyName:'One 97 Communications Ltd', symbol:'PAYTM', exchange:'NSE', strategy:'Momentum', entryPrice:450, exitPrice:750, currentPrice:820, quarters:[
+      {label:'Dec 2025', opm:155, netProfit:225,  shareholders:841556,  fii:51.75, dii:20.32, publicPct:32.18, promoter:0, govt:0},
+      {label:'Sep 2025', opm:140, netProfit:21,   shareholders:868596,  fii:51.71, dii:19.95, publicPct:33.22, promoter:0, govt:0},
+      {label:'Jun 2025', opm:72,  netProfit:123,  shareholders:915364,  fii:54.87, dii:15.84, publicPct:33.22, promoter:0, govt:0},
+      {label:'Mar 2025', opm:-89, netProfit:-545, shareholders:967955,  fii:55.39, dii:14.02, publicPct:38.13, promoter:0, govt:0},
+      {label:'Dec 2024', opm:-223,netProfit:-208, shareholders:989752,  fii:56.2,  dii:11.88, publicPct:38.13, promoter:0, govt:0},
+    ]},
   ];
 }
 
+// ═══════════════════════════════════════════════════════════════
+//  SMART PASTE ENGINE
+// ═══════════════════════════════════════════════════════════════
+
+let spHoldingData   = { headers:[], rows:[] };
+let spQuarterlyData = { headers:[], rows:[] };
+let spAllQuarters   = [];
+let spSelectedQ     = [];
+let spLastCalcData  = null; // stores last calculation result for send-to-input
+
+const SP_HOLDING_ROW_OPTS = [
+  {v:'',             label:'— select row type —'},
+  {v:'promoter',     label:'Promoter (%)'},
+  {v:'fii',          label:'FII (%)'},
+  {v:'dii',          label:'DII (%)'},
+  {v:'public',       label:'Public (%)'},
+  {v:'govt',         label:'Govt (%)'},
+  {v:'shareholders', label:'No. of Shareholders'},
+  {v:'ignore',       label:'↩ Ignore this row'},
+];
+
+const SP_QUARTERLY_ROW_OPTS = [
+  {v:'',      label:'— select row type —'},
+  {v:'opm',   label:'Operating Profit / OPM (value)'},
+  {v:'np',    label:'Net Profit (Cr)'},
+  {v:'ignore',label:'↩ Ignore this row'},
+];
+
+function spParseTable(raw) {
+  const lines = raw.trim().split('\n').filter(l => l.trim());
+  if (!lines.length) return null;
+  const isQuarterCol = s => /\b(jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)\b/i.test(s) || /20\d\d/.test(s);
+  let headerRow = lines[0].split('\t');
+  let dataStart = 1;
+  const hasQuarterHeader = headerRow.some(c => isQuarterCol(c));
+  if (!hasQuarterHeader && lines.length > 1 && lines[1].split('\t').some(c => isQuarterCol(c))) {
+    headerRow = lines[1].split('\t'); dataStart = 2;
+  }
+  const headers = headerRow.slice(1).map(h => h.trim()).filter(h => h);
+  const rows = [];
+  for (let i = dataStart; i < lines.length; i++) {
+    const cells = lines[i].split('\t');
+    const label = (cells[0] || '').trim().replace(/\s*\+\s*$/, '').trim();
+    if (!label) continue;
+    const vals = cells.slice(1).map(v => v.trim());
+    while (vals.length < headers.length) vals.push('');
+    rows.push({ label, vals: vals.slice(0, headers.length) });
+  }
+  return { headers, rows };
+}
+
+function spParseBoth() {
+  const rawH = document.getElementById('sp-paste-holding').value;
+  const rawQ = document.getElementById('sp-paste-quarterly').value;
+  if (!rawH.trim() && !rawQ.trim()) { toast('Paste at least one dataset!', 'error'); return; }
+  if (rawH.trim()) {
+    const p = spParseTable(rawH);
+    if (!p) { toast('Could not parse shareholding data', 'error'); return; }
+    spHoldingData = p;
+  } else { spHoldingData = { headers:[], rows:[] }; }
+  if (rawQ.trim()) {
+    const p = spParseTable(rawQ);
+    if (!p) { toast('Could not parse quarterly data', 'error'); return; }
+    spQuarterlyData = p;
+  } else { spQuarterlyData = { headers:[], rows:[] }; }
+  spAllQuarters = [...new Set([...spHoldingData.headers, ...spQuarterlyData.headers])];
+  spBuildTable('sp-tbl-holding',   spHoldingData,   SP_HOLDING_ROW_OPTS,   'sh');
+  spBuildTable('sp-tbl-quarterly', spQuarterlyData, SP_QUARTERLY_ROW_OPTS, 'sq');
+  spBuildQuarterChips();
+  document.getElementById('sp-mapping-section').style.display = 'block';
+  document.getElementById('sp-sent-banner').classList.remove('visible');
+  document.getElementById('sp-send-btn').style.display = 'none';
+  spLastCalcData = null;
+  document.getElementById('sp-mapping-section').scrollIntoView({behavior:'smooth', block:'start'});
+  toast('Tables generated — map your rows & columns!');
+}
+
+function spBuildTable(tableId, data, rowOpts, prefix) {
+  const table = document.getElementById(tableId);
+  const { headers, rows } = data;
+  if (!rows.length) { table.innerHTML = '<tr><td style="padding:2rem;text-align:center;color:var(--text-dim);">No data parsed</td></tr>'; return; }
+
+  let thead = '<thead><tr>';
+  thead += `<th class="sp-corner-th" style="font-size:0.5rem;color:var(--text-dim);">ROW TYPE ↓</th>`;
+  headers.forEach((h, ci) => {
+    thead += `<th class="sp-col-drop-th">
+      <select class="sp-map-sel" id="${prefix}-colsel-${ci}" onchange="this.classList.toggle('sp-selected',!!this.value)">
+        <option value="">— quarter —</option>
+        ${spAllQuarters.map(q => `<option value="${q}" ${q===h?'selected':''}>${q}</option>`).join('')}
+      </select>
+    </th>`;
+  });
+  thead += `<th style="background:rgba(0,255,136,0.06);border-bottom:2px solid var(--accent2);min-width:150px;font-size:0.55rem;color:var(--accent2);letter-spacing:1px;">ROW TYPE</th>`;
+  thead += '</tr></thead>';
+
+  let tbody = '<tbody>';
+  rows.forEach((row, ri) => {
+    tbody += '<tr>';
+    tbody += `<td style="color:var(--text-dim);font-size:0.62rem;border-right:1px solid var(--border);">${row.label}</td>`;
+    row.vals.forEach(v => { tbody += `<td class="sp-data-val">${v}</td>`; });
+    tbody += `<td class="sp-row-drop-td">
+      <select class="sp-map-sel" id="${prefix}-rowsel-${ri}" onchange="this.classList.toggle('sp-selected',this.value&&this.value!=='ignore')">
+        ${rowOpts.map(o => `<option value="${o.v}">${o.label}</option>`).join('')}
+      </select>
+    </td>`;
+    tbody += '</tr>';
+  });
+  tbody += '</tbody>';
+  table.innerHTML = thead + tbody;
+  spAutoDetectRows(prefix, rows, rowOpts);
+}
+
+function spAutoDetectRows(prefix, rows, rowOpts) {
+  const holdingMap = {
+    'promoter':     ['promoter','promot'],
+    'fii':          ['fii','foreign','fi'],
+    'dii':          ['dii','domestic','di'],
+    'public':       ['public'],
+    'govt':         ['govt','gov'],
+    'shareholders': ['shareholder','no. of share','number of share'],
+  };
+  const quarterlyMap = {
+    'opm': ['operating profit','opm','financing margin','operating profit margin','margin %'],
+    'np':  ['net profit','netprofit','net profit +'],
+  };
+  const map = prefix.startsWith('sh') ? holdingMap : quarterlyMap;
+  rows.forEach((row, ri) => {
+    const lower = row.label.toLowerCase();
+    for (const [key, keywords] of Object.entries(map)) {
+      if (keywords.some(k => lower.includes(k))) {
+        const sel = document.getElementById(`${prefix}-rowsel-${ri}`);
+        if (sel) { sel.value = key; sel.classList.add('sp-selected'); break; }
+      }
+    }
+  });
+}
+
+function spBuildQuarterChips() {
+  const container = document.getElementById('sp-q-chips');
+  spSelectedQ = [];
+  container.innerHTML = spAllQuarters.map(q => `
+    <div class="sp-q-chip" data-q="${q}" onclick="spToggleQ(this,'${q}')">${q}</div>
+  `).join('');
+}
+
+function spToggleQ(el, q) {
+  const idx = spSelectedQ.indexOf(q);
+  if (idx !== -1) { spSelectedQ.splice(idx, 1); }
+  else {
+    if (spSelectedQ.length >= 5) { toast('Max 5 quarters. Click a selected one to deselect.', 'error'); return; }
+    spSelectedQ.push(q);
+  }
+  const labels = ['CUR','Q-1','Q-2','Q-3','Q-4'];
+  document.querySelectorAll('.sp-q-chip').forEach(chip => {
+    const cq = chip.dataset.q;
+    const ci = spSelectedQ.indexOf(cq);
+    chip.className = 'sp-q-chip' + (ci !== -1 ? ' sp-selected' : '');
+    const badge = chip.querySelector('.sp-q-rank');
+    if (badge) badge.remove();
+    if (ci !== -1) {
+      const b = document.createElement('span');
+      b.className = 'sp-q-rank'; b.textContent = labels[ci];
+      chip.appendChild(b);
+    }
+  });
+}
+
+function spGetColIndex(prefix, data, quarterName) {
+  for (let ci = 0; ci < data.headers.length; ci++) {
+    const sel = document.getElementById(`${prefix}-colsel-${ci}`);
+    const val = sel ? sel.value : data.headers[ci];
+    if (val === quarterName) return ci;
+  }
+  return data.headers.indexOf(quarterName);
+}
+
+function spGetRowByType(prefix, data, type) {
+  return data.rows.findIndex((row, ri) => {
+    const sel = document.getElementById(`${prefix}-rowsel-${ri}`);
+    return sel && sel.value === type;
+  });
+}
+
+function spGetVal(prefix, data, rowType, quarterName) {
+  const ri = spGetRowByType(prefix, data, rowType);
+  if (ri === -1) return null;
+  const ci = spGetColIndex(prefix, data, quarterName);
+  if (ci === -1) return null;
+  return data.rows[ri].vals[ci];
+}
+
+function spParseNum(s) {
+  if (s === null || s === undefined || s === '') return null;
+  const cleaned = String(s).replace(/[,%₹$\s]/g, '').replace(/\(([^)]+)\)/, '$1');
+  const n = parseFloat(cleaned);
+  return isNaN(n) ? null : n;
+}
+
+function spComputeOPMResult(vals) {
+  const nums = vals.map(spParseNum);
+  const cur = nums[0];
+  const prev = nums.slice(1).filter(v => v !== null);
+  if (cur === null || prev.length < 1) return {result:'', cur, prev};
+  if (prev.every(p => cur > p)) return {result:'MAX Yes', cur, prev};
+  const mn = Math.min(...prev);
+  if (cur <= mn) return {result:'No', cur, prev};
+  const avg = prev.reduce((a,b)=>a+b,0)/prev.length;
+  const mx  = Math.max(...prev);
+  if (avg===0||mx===0) return {result:'No', cur, prev};
+  const avgPct = cur/avg*100;
+  const perPct = cur/mx*100;
+  if (avgPct > 66 || perPct > 66) return {result:'No', cur, prev, avgPct, perPct};
+  if (avgPct <= 50 && perPct <= 50) return {result:'#1 Yes', cur, prev, avgPct, perPct};
+  if (avgPct <= 50 && perPct >  50) return {result:'#2 Yes', cur, prev, avgPct, perPct};
+  if (avgPct >  50 && perPct <= 50) return {result:'#3 Yes', cur, prev, avgPct, perPct};
+  return {result:'#4 Yes', cur, prev, avgPct, perPct};
+}
+
+function spLowestCheck(vals) {
+  const nums = vals.map(spParseNum);
+  const cur  = nums[0];
+  const prev = nums.slice(1).filter(v => v !== null);
+  if (cur === null || prev.length < 1) return {result:'', cur, prev};
+  return {result: cur <= Math.min(...prev) ? 'Yes' : 'No', cur, prev};
+}
+
+function spFiiCheck(vals) {
+  const nums = vals.map(spParseNum);
+  const cur  = nums[0]; const prev = nums[1];
+  if (cur === null || prev === null) return {result:'', cur, prev};
+  return {result: cur > prev ? 'Yes' : 'No', cur, prev};
+}
+
+function spCalculate() {
+  if (spSelectedQ.length < 2) { toast('Select at least 2 quarters (Current + Q-1)', 'error'); return; }
+  const quarters = spSelectedQ;
+
+  function getVals(prefix, data, type) { return quarters.map(q => spGetVal(prefix, data, type, q)); }
+
+  const opmVals = getVals('sq', spQuarterlyData, 'opm');
+  const npVals  = getVals('sq', spQuarterlyData, 'np');
+  const shVals  = getVals('sh', spHoldingData,   'shareholders');
+  const fiiVals = getVals('sh', spHoldingData,   'fii');
+  const diiVals = getVals('sh', spHoldingData,   'dii');
+  const pubVals = getVals('sh', spHoldingData,   'public');
+  const proVals = getVals('sh', spHoldingData,   'promoter');
+  const govVals = getVals('sh', spHoldingData,   'govt');
+
+  const hasOPM = opmVals.some(v => v !== null);
+  const hasFII = fiiVals.some(v => v !== null);
+  if (!hasOPM) { toast('Map OPM row first!', 'error'); return; }
+  if (!hasFII) { toast('Map FII row first!', 'error'); return; }
+
+  const opmRes = spComputeOPMResult(opmVals);
+  const npRes  = spComputeOPMResult(npVals);
+  const shRes  = spLowestCheck(shVals);
+  const pubRes = spLowestCheck(pubVals);
+  const fiiRes = spFiiCheck(fiiVals);
+  const diiRes = spFiiCheck(diiVals);
+
+  // Extra shareholder check (same logic as main app)
+  let extraPassed = true;
+  let extraDetail = null;
+  if (opmRes.result === 'MAX Yes') {
+    const prevOpmVals = opmVals.slice(1);
+    const q1OpmRes = spComputeOPMResult(prevOpmVals);
+    if (!(q1OpmRes.result.startsWith('#') && q1OpmRes.result.includes('Yes'))) {
+      const prevShVals = shVals.slice(1);
+      const prevPubVals = pubVals.slice(1);
+      const q1Sh = spParseNum(prevShVals[0]);
+      const validPrevSh = prevShVals.map(spParseNum).filter(v => v !== null);
+      const q1ShLowest = validPrevSh.length >= 2 && q1Sh !== null && validPrevSh.every(v => q1Sh <= v);
+      const q1Pub = spParseNum(prevPubVals[0]);
+      const validPrevPub = prevPubVals.map(spParseNum).filter(v => v !== null);
+      const q1PubLowest = validPrevPub.length >= 2 && q1Pub !== null && validPrevPub.every(v => q1Pub <= v);
+      if (q1ShLowest || q1PubLowest) extraPassed = false;
+      extraDetail = { q1OpmResult: q1OpmRes.result, q1ShLowest, q1PubLowest };
+    } else {
+      extraDetail = { q1OpmResult: q1OpmRes.result, autoPass: true };
+    }
+  }
+
+  // Compute verdict
+  let verdict = 'No Trade';
+  const shOrPubPass = shRes.result === 'Yes' || pubRes.result === 'Yes';
+  if (extraPassed && shOrPubPass && fiiRes.result === 'Yes') {
+    if (opmRes.result === 'MAX Yes' && npRes.result === 'MAX Yes') {
+      verdict = `Max Trade ${diiRes.result === 'Yes' ? 'Aura++' : 'Aura--'}`;
+    } else if ((opmRes.result === 'MAX Yes' || (opmRes.result.startsWith('#') && opmRes.result.includes('Yes'))) && npRes.result === 'No') {
+      verdict = 'Trade ⚠️';
+    } else if (opmRes.result.startsWith('#') && opmRes.result.includes('Yes') && npRes.result.startsWith('#') && npRes.result.includes('Yes')) {
+      const n1 = parseInt(opmRes.result[1]);
+      const n2 = parseInt(npRes.result[1]);
+      verdict = `Trade #${n1+n2} ${diiRes.result === 'Yes' ? 'Aura++' : 'Aura--'}`;
+    }
+  }
+
+  const isQual = isQualifyingVerdict(verdict);
+  const verdictCls = isQual ? (verdict.startsWith('Max') ? 'pass' : 'warn') : 'fail';
+  const verdictIcon = isQual ? (verdict.startsWith('Max') ? '🚀' : '⚡') : '🚫';
+
+  // Store for send-to-input
+  spLastCalcData = { opmVals, npVals, shVals, fiiVals, diiVals, pubVals, proVals, govVals, quarters };
+
+  // Build result HTML
+  let html = `
+    <div class="sp-verdict-card ${verdictCls}">
+      <div class="sp-verdict-icon">${verdictIcon}</div>
+      <div class="sp-verdict-main">
+        <div class="sp-verdict-label">VERDICT</div>
+        <div class="sp-verdict-text ${verdictCls}">${verdict}</div>
+      </div>
+    </div>
+    <div class="sp-check-grid">
+  `;
+
+  function spCheckItem(label, result, cls, detail) {
+    return `<div class="sp-check-item">
+      <div class="sp-check-item-top">
+        <span class="sp-check-item-label">${label}</span>
+        <span class="sp-check-badge ${cls}">${cls.toUpperCase()}</span>
+      </div>
+      <div class="sp-check-result ${cls}">${result}</div>
+      ${detail ? `<div class="sp-check-detail">${detail}</div>` : ''}
+    </div>`;
+  }
+
+  const opmCls = opmRes.result === 'MAX Yes' ? 'pass' : opmRes.result === 'No' || !opmRes.result ? 'fail' : 'warn';
+  html += spCheckItem('OPM / Operating Margin', opmRes.result || '—', opmCls,
+    opmRes.avgPct ? `avg%: ${opmRes.avgPct.toFixed(1)}% | max%: ${opmRes.perPct.toFixed(1)}%` : '');
+
+  const npCls = npRes.result === 'MAX Yes' ? 'pass' : npRes.result === 'No' || !npRes.result ? 'fail' : 'warn';
+  html += spCheckItem('Net Profit', npRes.result || '—', npCls,
+    npRes.avgPct ? `avg%: ${npRes.avgPct.toFixed(1)}% | max%: ${npRes.perPct.toFixed(1)}%` : '');
+
+  const shCls = shRes.result === 'Yes' ? 'pass' : 'fail';
+  html += spCheckItem('Shareholders (lowest?)', shRes.result || '—', shCls,
+    shRes.cur !== null ? `Current: ${fmtInt(shRes.cur)}` : '');
+
+  const pubCls = pubRes.result === 'Yes' ? 'pass' : 'fail';
+  html += spCheckItem('Public % (lowest?)', pubRes.result || '—', pubCls,
+    pubRes.cur !== null ? `Current: ${pubRes.cur}%` : '');
+
+  const shOrPubCls = shOrPubPass ? 'pass' : 'fail';
+  html += spCheckItem('Sh OR Public% Check', shOrPubPass ? '✓ Pass' : '✗ Fail', shOrPubCls, 'At least one must be at lowest');
+
+  const fiiCls = fiiRes.result === 'Yes' ? 'pass' : 'fail';
+  const fiiDiff = fiiRes.cur !== null && fiiRes.prev !== null ? ((fiiRes.cur - fiiRes.prev) >= 0 ? '+' : '') + (fiiRes.cur - fiiRes.prev).toFixed(2) + '%' : '';
+  html += spCheckItem('FII (increased vs Q-1?)', fiiRes.result || '—', fiiCls,
+    fiiDiff ? `Change: ${fiiDiff}` : '');
+
+  const diiCls = diiRes.result === 'Yes' ? 'pass' : 'warn';
+  const diiDiff = diiRes.cur !== null && diiRes.prev !== null ? ((diiRes.cur - diiRes.prev) >= 0 ? '+' : '') + (diiRes.cur - diiRes.prev).toFixed(2) + '%' : '';
+  html += spCheckItem('DII (Aura indicator)', diiRes.result === 'Yes' ? 'Aura++' : 'Aura--', diiCls,
+    diiDiff ? `Change: ${diiDiff}` : '');
+
+  if (extraDetail) {
+    const extraCls = extraPassed ? 'pass' : 'fail';
+    html += spCheckItem('Extra Rule (OPM=MAX)', extraPassed ? '✓ Passed' : '✗ Failed', extraCls,
+      extraDetail.autoPass ? 'Q-1 was #n Yes → auto pass' :
+      `Q-1 OPM: ${extraDetail.q1OpmResult||'—'} | Q-1 Sh lowest: ${extraDetail.q1ShLowest} | Q-1 Pub lowest: ${extraDetail.q1PubLowest}`);
+  }
+
+  html += `</div>`;
+
+  // Quarter data chips
+  html += `<div class="sp-q-summary">`;
+  quarters.forEach((q, i) => {
+    const isCur = i === 0;
+    const opm = spParseNum(opmVals[i]);
+    const np  = spParseNum(npVals[i]);
+    const fii = spParseNum(fiiVals[i]);
+    const dii = spParseNum(diiVals[i]);
+    const sh  = spParseNum(shVals[i]);
+    html += `<div class="sp-q-data-chip ${isCur?'cur':''}">
+      <div class="qdc-label">${isCur?'CURRENT':('Q-'+i)} — ${q}</div>
+      <div class="qdc-val">
+        OPM: ${opm!==null?opm+'%':'—'} | NP: ${np!==null?np:'—'} |
+        FII: ${fii!==null?fii+'%':'—'} | DII: ${dii!==null?dii+'%':'—'} |
+        Sh: ${sh!==null?fmtInt(sh):'—'}
+      </div>
+    </div>`;
+  });
+  html += `</div>`;
+
+  document.getElementById('sp-results-output').innerHTML = html;
+  document.getElementById('sp-send-btn').style.display = 'inline-block';
+}
+
+function spSendToInput() {
+  if (!spLastCalcData) { toast('Calculate first!', 'error'); return; }
+  const { opmVals, npVals, shVals, fiiVals, diiVals, pubVals, proVals, govVals, quarters } = spLastCalcData;
+
+  // Set current quarter month/year from the first selected quarter label
+  const curQLabel = quarters[0] || '';
+  const parts = curQLabel.trim().split(' ');
+  if (parts.length === 2) {
+    const mSel = document.getElementById('q0-month');
+    const ySel = document.getElementById('q0-year');
+    if (mSel && MONTHS.includes(parts[0])) mSel.value = parts[0];
+    if (ySel) ySel.value = parts[1];
+    updateCurrentQLabel();
+  }
+
+  // Fill in each quarter's fields
+  quarters.forEach((qLabel, i) => {
+    const parseAndSet = (id, val) => {
+      const el = document.getElementById(id);
+      if (el) { const n = spParseNum(val); el.value = n !== null ? n : ''; }
+    };
+    parseAndSet(`q${i}-opm`, opmVals[i]);
+    parseAndSet(`q${i}-np`,  npVals[i]);
+    parseAndSet(`q${i}-sh`,  shVals[i]);
+    parseAndSet(`q${i}-fii`, fiiVals[i]);
+    parseAndSet(`q${i}-dii`, diiVals[i]);
+    parseAndSet(`q${i}-pub`, pubVals[i]);
+    parseAndSet(`q${i}-pro`, proVals[i]);
+    parseAndSet(`q${i}-gov`, govVals[i]);
+  });
+
+  switchQTab(0);
+  document.getElementById('sp-sent-banner').classList.add('visible');
+  toast('Data sent to Input tab! Fill in company details and save.');
+}
+
+// ─── INIT ────────────────────────────────────────────────
 buildQuarterUI();
 buildTableHeader();
 loadRecords();
