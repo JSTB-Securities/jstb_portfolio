@@ -2041,13 +2041,24 @@ function spParseTable(raw) {
   if (!hasQuarterHeader && lines.length > 1 && lines[1].split('\t').some(c => isQuarterCol(c))) {
     headerRow = lines[1].split('\t'); dataStart = 2;
   }
-  const headers = headerRow.slice(1).map(h => h.trim()).filter(h => h);
+  // If first cell of header row is also a quarter (screener pastes date in col 0),
+  // include it as a header column instead of treating it as row label
+  const firstCell = (headerRow[0] || '').trim();
+  const headerStartIdx = isQuarterCol(firstCell) ? 0 : 1;
+  const headers = headerRow.slice(headerStartIdx).map(h => h.trim()).filter(h => h);
+  const dataColOffset = headerStartIdx; // 0 means first data cell is also in col 0
   const rows = [];
   for (let i = dataStart; i < lines.length; i++) {
     const cells = lines[i].split('\t');
     const label = (cells[0] || '').trim().replace(/\s*\+\s*$/, '').trim();
     if (!label) continue;
     const vals = cells.slice(1).map(v => v.trim());
+    // If headers started at col 0, data also starts at col 1 normally — no change needed
+    // But if screener included an extra leading quarter, grab that extra value too
+    if (dataColOffset === 0 && cells.length > headers.length) {
+      // headers includes what was col 0, so data needs the extra trailing cell
+      vals.push((cells[headers.length] || '').trim());
+    }
     while (vals.length < headers.length) vals.push('');
     rows.push({ label, vals: vals.slice(0, headers.length) });
   }
